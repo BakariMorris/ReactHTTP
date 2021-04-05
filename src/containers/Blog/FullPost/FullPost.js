@@ -16,22 +16,30 @@ class FullPost extends Component {
         .then(response => console.log('response' ,response))
     }
 
-    componentDidUpdate() {
-        if( this.props.id) {
-            if(!this.state.loadedPost || this.state.loadedPost && this.state.loadedPost.id !== this.props.id) {
+    componentDidMount() {
+        console.log(this.props);
+        this.loadData();
+    }
 
-            fetch('https://jsonplaceholder.typicode.com/posts/' + this.props.id)
+    componentDidUpdate() {
+        this.loadData();
+    }
+
+    loadData() {
+        if( this.props.match.params.id) {
+            if(!this.state.loadedPost || this.state.loadedPost && this.state.loadedPost.id != this.props.match.params.id) {
+
+            fetch('https://jsonplaceholder.typicode.com/posts/' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => this.setState({loadedPost: data}))
             }
         }
     }
 
-
     render () {
         let post = <p style={{textAlign: 'center'}}>Please select a Post!</p>;
 
-        if(this.props.id) {
+        if(this.props.match.params.id) {
             post = <p style={{textAlign: 'center'}}>Loading...!</p>
         }
 
